@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação Especial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        video {
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Vídeo Exclusivo</h2>
+    
+    <!-- Link do Cloudinary (Carregamento otimizado) -->
+    <video id="meuVideo" controls>
+        <source src="https://res.cloudinary.com/ayvwgscx/video/upload/v1785452079/infinito_em_nos_jte2yk.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos.
+    </video>
+
+    <script>
+        const video = document.getElementById('meuVideo');
+        
+        function avisarPython(evento) {
+            let minutos = Math.floor(video.currentTime / 60);
+            let segundos = Math.floor(video.currentTime % 60);
+            let tempoFormatado = `${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+
+            // Link real do seu servidor Python online
+            fetch('https://caetano22.pythonanywhere.com/notificar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    evento: evento,
+                    tempo: tempoFormatado
+                })
+            }).catch(err => console.log("Erro de conexão", err));
+        }
+
+        video.addEventListener('play', () => avisarPython('play'));
+        video.addEventListener('pause', () => avisarPython('pause'));
+        video.addEventListener('seeked', () => avisarPython('seeked'));
+        video.addEventListener('ended', () => avisarPython('ended'));
+    </script>
+</body>
+</html>
